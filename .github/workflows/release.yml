@@ -49,30 +49,10 @@ jobs:
             ./dist/*.whl
             ./dist/*.tar.gz
 
-  release_test:
-    name: Release to Test PyPI
-    needs: build
-    environment: release_test
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-
-    steps:
-      - name: Download sdist and wheel
-        uses: actions/download-artifact@v7
-        with:
-          name: citeable-wheel-sdist
-          path: ./dist
-
-      - name: Publish package distributions to Test PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-
   release:
     name: Release to PyPI
-    needs: release_test
-    environment: release
+    needs: build
+    environment: pypi
     runs-on: ubuntu-latest
     permissions:
       id-token: write
