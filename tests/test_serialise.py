@@ -1,6 +1,23 @@
-"""Tests for __str__, __repr__, and summary() serialisation."""
+"""Tests for __str__, __repr__, summary(), and JSON serialisation."""
 
-from citeable import Article, Book, InProceedings, Misc, Software, TechReport, Thesis
+import pathlib
+
+import pytest
+
+from citeable import (
+    Article,
+    Book,
+    CitationBase,
+    InProceedings,
+    Misc,
+    Software,
+    TechReport,
+    Thesis,
+    from_jsons,
+    load_json,
+    to_jsons,
+    write_json,
+)
 
 # ── __str__ (BibTeX output) ─────────────────────────────────────────────
 
@@ -398,3 +415,116 @@ def test_summary_short_title_not_truncated():
     )
     _, citation_str = m.summary()
     assert "\u2026" not in citation_str
+
+
+# ── JSON round-trip ──────────────────────────────────────────────────────
+
+
+def _make_all_types() -> list[CitationBase]:
+    """Return one instance of each entry type with distinctive fields."""
+    return [
+        Article(
+            author=["Huttley, Gavin"],
+            title="diverse-seq",
+            year=2025,
+            journal="JOSS",
+            volume=10,
+            pages="7765",
+            key="custom.key",
+            app="diverse-seq",
+        ),
+        Book(
+            author=["Knuth, Donald"],
+            title="TAOCP",
+            year=1997,
+            publisher="Addison-Wesley",
+            edition="3rd",
+        ),
+        InProceedings(
+            author=["Doe, John"],
+            title="A Paper",
+            year=2023,
+            booktitle="Proceedings",
+            pages="1--10",
+        ),
+        TechReport(
+            author=["Turing, Alan"],
+            title="On Computable Numbers",
+            year=1936,
+            institution="Cambridge",
+            number="TR-42",
+        ),
+        Thesis(
+            author=["Student, Alice"],
+            title="My Thesis",
+            year=2022,
+            school="MIT",
+            thesis_type="phd",
+        ),
+        Software(
+            author=["Dev, Jane"],
+            title="my-tool",
+            year=2024,
+            version="1.0.0",
+        ),
+        Misc(
+            author=["Smith, A"],
+            title="Something",
+            year=2024,
+            doi="10.1234/misc",
+        ),
+    ]
+
+
+@pytest.mark.parametrize("citation", _make_all_types(), ids=lambda c: type(c).__name__)
+def test_to_dict_from_dict_round_trip(citation: CitationBase) -> None:
+    d = citation.to_dict()
+    restored = CitationBase.from_dict(d)
+    assert restored == citation
+    assert restored.key == citation.key
+    assert restored.app == citation.app
+
+
+@pytest.mark.parametrize("citation", _make_all_types(), ids=lambda c: type(c).__name__)
+def test_to_dict_contains_type(citation: CitationBase) -> None:
+    d = citation.to_dict()
+    assert "type" in d
+    assert d["type"] == type(citation).__name__
+
+
+def test_from_dict_unknown_type() -> None:
+    with pytest.raises(ValueError, match="unknown citation type"):
+        CitationBase.from_dict(
+            {"type": "Nonexistent", "author": ["A"], "title": "T", "year": 2024}
+        )
+
+
+def test_from_dict_missing_type() -> None:
+    with pytest.raises(ValueError, match="missing required 'type' key"):
+        CitationBase.from_dict({"author": ["A"], "title": "T", "year": 2024})
+
+
+def test_to_jsons_from_jsons_mixed_types() -> None:
+    originals = _make_all_types()
+    json_str = to_jsons(originals)
+    restored = from_jsons(json_str)
+    assert len(restored) == len(originals)
+    for orig, rest in zip(originals, restored, strict=True):
+        assert type(rest) is type(orig)
+        assert rest == orig
+        assert rest.key == orig.key
+        assert rest.app == orig.app
+
+
+def test_write_json_load_json(tmp_path: pathlib.Path) -> None:
+    originals = _make_all_types()
+    path = tmp_path / "citations.json"
+    write_json(citations=originals, path=path)
+    assert path.exists()
+    restored = load_json(path)
+    assert len(restored) == len(originals)
+    for orig, rest in zip(originals, restored, strict=True):
+        assert type(rest) is type(orig)
+        assert rest == orig
+        assert rest.key == orig.key
+        assert rest.app == orig.app

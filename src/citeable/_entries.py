@@ -121,6 +121,27 @@ class CitationBase(ABC):
         if self.note is not None:
             fields.append(("note", self.note))
 
+    def to_dict(self) -> dict[str, object]:
+        """Return a JSON-serialisable dict including a ``"type"`` discriminator."""
+        return {"type": type(self).__name__, **vars(self)}
+
+    @classmethod
+    def from_dict(cls, data: dict[str, object]) -> CitationBase:
+        """Reconstruct a citation from a dict produced by :meth:`to_dict`.
+
+        Raises ``ValueError`` if the ``"type"`` key is missing or unknown.
+        """
+        data = dict(data)  # shallow copy so we don't mutate the caller's dict
+        type_name = data.pop("type", None)
+        if type_name is None:
+            msg = "dict is missing required 'type' key"
+            raise ValueError(msg)
+        entry_cls = _ENTRY_TYPES.get(str(type_name))
+        if entry_cls is None:
+            msg = f"unknown citation type {type_name!r}"
+            raise ValueError(msg)
+        return entry_cls(**data)
+
     @abstractmethod
     def _repr_fields(self) -> list[tuple[str, object]]:
         """Return the list of ``(name, value)`` pairs for ``__repr__``."""
@@ -551,3 +572,14 @@ class Misc(CitationBase):
         ]
         self._append_common_optional_repr(fields)
         return fields
+
+
+_ENTRY_TYPES: dict[str, type[CitationBase]] = {
+    "Article": Article,
+    "Book": Book,
+    "InProceedings": InProceedings,
+    "TechReport": TechReport,
+    "Thesis": Thesis,
+    "Software": Software,
+    "Misc": Misc,
+}

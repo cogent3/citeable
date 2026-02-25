@@ -350,7 +350,9 @@ bib_string = "\n\n".join(str(c) for c in unique)
 
 ## Using citeable with cogent3
 
-The `define_app` decorator in cogent3 accepts an optional `cite` argument:
+> **Note:** The following is planned, but not yet implemented 🚧!
+
+The `define_app` decorator in cogent3 **will** accept an optional `cite` argument:
 
 ```python
 @define_app(cite=Article(...))
@@ -358,7 +360,7 @@ class MyPlugin:
     ...
 ```
 
-cogent3 collects citations across a composed app and exposes a method (e.g. `app.bibliography()`) that returns a combined `.bib` string.
+cogent3 **will** collect citations across a composed app and expose a method (e.g. `app.bibliography()`) that returns a combined `.bib` string.
 
 ## Distribution guidance
 
