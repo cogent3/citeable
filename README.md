@@ -1,11 +1,9 @@
-# citeable 📚📎
+# citeable 📚
 
 *Structured BibTeX citations for cogent3 plugins.*
 
-[![PyPI version](https://img.shields.io/pypi/v/citeable.svg)](https://pypi.org/project/citeable/)
-[![Python versions](https://img.shields.io/pypi/pyversions/citeable.svg)](https://pypi.org/project/citeable/)
 [![License](https://img.shields.io/pypi/l/citeable.svg)](https://github.com/cogent3/citeable/blob/main/LICENSE)
-[![CI](https://github.com/cogent3/citeable/actions/workflows/testing_develop.yml/badge.svg)](https://github.com/cogent3/citeable/actions/workflows/testing_develop.yml)
+
 
 > **Note:** `citeable` is not yet integrated into cogent3. This will happen soon!
 
@@ -304,7 +302,7 @@ Keys are auto-generated from the first author's surname and the year, e.g. `"Hut
 
 On collision, `assign_unique_keys` appends a lowercase letter suffix: `"Smith.2024.a"`, `"Smith.2024.b"`, etc.
 
-A developer may supply an explicit `key` at construction time, in which case auto-generation is skipped.
+A developer may supply an explicit `key` at construction time, in which case auto-generation is skipped. But note that the key attribute of a citation can be modified and cogent3 will do this if their are key conflicts.
 
 ## Working with collections
 
