@@ -19,11 +19,6 @@ from citeable._entries import (
 
 _ENTRY_START_RE = re.compile(r"@(\w+)\s*\{")
 
-_FIELD_RE = re.compile(
-    r"(\w+)\s*=\s*\{([^}]*)\}",
-    re.DOTALL,
-)
-
 _TYPE_MAP: dict[str, type[CitationBase]] = {
     "article": Article,
     "book": Book,
@@ -75,11 +70,42 @@ def _parse_authors(raw: str) -> list[str]:
     return [_normalise_author(a) for a in raw.split(" and ")]
 
 
+_FIELD_START_RE = re.compile(r"^\s*(\w+)\s*=\s*", re.MULTILINE)
+
+
+def _extract_value(raw: str) -> str:
+    """Extract a field value from the text after ``=``.
+
+    Handles brace-delimited (with nesting), quoted, and bare values.
+    """
+    raw = raw.strip()
+    if raw.startswith("{"):
+        depth = 0
+        for i, ch in enumerate(raw):
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return raw[1:i]
+    elif raw.startswith('"'):
+        end = raw.index('"', 1)
+        return raw[1:end]
+    else:
+        return raw.rstrip(",").strip()
+    return raw
+
+
 def _parse_fields(body: str) -> dict[str, str]:
-    return {
-        fm.group(1).lower().strip(): fm.group(2).strip()
-        for fm in _FIELD_RE.finditer(body)
-    }
+    """Parse BibTeX fields supporting braced, quoted, and bare values."""
+    matches = list(_FIELD_START_RE.finditer(body))
+    fields: dict[str, str] = {}
+    for i, m in enumerate(matches):
+        name = m.group(1).lower()
+        val_start = m.end()
+        val_end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
+        fields[name] = _extract_value(body[val_start:val_end])
+    return fields
 
 
 def _common_kwargs(

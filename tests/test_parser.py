@@ -38,6 +38,20 @@ def test_parse_article():
     assert cite.doi == "10.21105/joss.07765"
 
 
+def test_parse_software_1():
+    cite = from_bibtex_string("""@software{cogent3,
+  title        = {{cogent3}: making sense of sequence},
+  author       = {Huttley, Gavin and Caley, Katherine and Fotovat, Nabi and Ma, Stephen Ka-Wah and Koh, Moses and Morris, Richard and McArthur, Robert and McDonald, Daniel and Jaya, Fred and Maxwell, Peter and Martini, James and La, Thomas and Lang, Yapeng},
+  year         = 2025,
+  month        = jul,
+  doi          = {10.5281/zenodo.16519079},
+  urldate      = {2025-08-02},
+  howpublished = {Zenodo}
+}
+""")
+    assert isinstance(cite, Software)
+
+
 def test_parse_book():
     cite = from_bibtex_string("""
 @book{Knuth.1997,
