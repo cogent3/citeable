@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "citeable"
-version = "2026.2.25a"
+version = "2026.3.2b"
 description = "Structured BibTeX citations for cogent3 plugins"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "BSD-3-Clause" }
 dependencies = []
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
     "Topic :: Software Development :: Libraries :: Python Modules",
