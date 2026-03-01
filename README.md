@@ -12,7 +12,7 @@
 
 ## Overview
 
-`citeable` is a light-weight zero-dependency pure Python library for defining structured bibliographic citations. It is intended as a dependency of [cogent3](https://github.com/cogent3/cogent3) and of cogent3 plugin packages, enabling plugin developers to declare citations that cogent3 can assemble into a BibTeX-compatible `.bib` file to ensure users cite their work.
+`citeable` is a lightweight, zero-dependency, pure-Python library for defining structured bibliographic citations. It is being used by [cogent3](https://github.com/cogent3/cogent3) and cogent3 plugin developers to declare citations that cogent3 can assemble into a BibTeX-compatible `.bib` file to ensure users cite their work. But it can be used for other projects too!
 
 ## Installation
 
