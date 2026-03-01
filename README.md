@@ -1,6 +1,6 @@
 # citeable 📚
 
-*Structured BibTeX citations for cogent3 plugins.*
+*Structured BibTeX citations for developers of scientific software packages.*
 
 [![License](https://img.shields.io/pypi/l/citeable.svg)](https://github.com/cogent3/citeable/blob/main/LICENSE)
 [![Coverage Status](https://coveralls.io/repos/github/GavinHuttley/citeable/badge.svg?branch=main)](https://coveralls.io/github/GavinHuttley/citeable?branch=main)
@@ -12,7 +12,7 @@
 
 ## Overview
 
-`citeable` is a lightweight, zero-dependency, pure-Python library for defining structured bibliographic citations. It is being used by [cogent3](https://github.com/cogent3/cogent3) and cogent3 plugin developers to declare citations that cogent3 can assemble into a BibTeX-compatible `.bib` file to ensure users cite their work. But it can be used for other projects too!
+`citeable` is a lightweight, zero-dependency, pure-Python library for defining structured bibliographic citations. The goal is to make it easy for package users to cite package developers. It is being used by [cogent3](https://github.com/cogent3/cogent3) and cogent3 plugin developers to declare citations that cogent3 can assemble into a BibTeX-compatible `.bib` file to ensure users cite their work. But it can be used for other projects too!
 
 ## Installation
 

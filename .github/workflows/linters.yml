@@ -3,6 +3,9 @@ name: Lint code using ruff
 on:
   push:
 
+permissions:
+  contents: write
+
 jobs:
   linters:
     runs-on: ubuntu-latest
