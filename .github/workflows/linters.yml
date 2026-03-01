@@ -2,6 +2,7 @@ name: Lint code using ruff
 
 on:
   push:
+  pull_request:
 
 permissions:
   contents: write
