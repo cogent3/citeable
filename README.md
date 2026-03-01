@@ -3,9 +3,12 @@
 *Structured BibTeX citations for cogent3 plugins.*
 
 [![License](https://img.shields.io/pypi/l/citeable.svg)](https://github.com/cogent3/citeable/blob/main/LICENSE)
-
-
-> **Note:** `citeable` is not yet integrated into cogent3. This will happen soon!
+[![Coverage Status](https://coveralls.io/repos/github/GavinHuttley/citeable/badge.svg?branch=main)](https://coveralls.io/github/GavinHuttley/citeable?branch=main)
+[![PyPI version](https://badge.fury.io/py/citeable.svg)](https://badge.fury.io/py/citeable)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/cogent3)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![CodeQL](https://github.com/cogent3/cogent3/actions/workflows/codeql.yml/badge.svg)](https://github.com/cogent3/cogent3/actions/workflows/codeql.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ec0f6a2dad174b04b5dcbfdae02acab7)](https://app.codacy.com/gh/cogent3/citeable/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Overview
 
@@ -347,8 +350,6 @@ bib_string = "\n\n".join(str(c) for c in unique)
 </details>
 
 ## Using citeable with cogent3
-
-> **Note:** The following is planned, but not yet implemented 🚧!
 
 The `define_app` decorator in cogent3 **will** accept an optional `cite` argument:
 
