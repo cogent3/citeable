@@ -42,7 +42,7 @@ jobs:
         run: uv build
 
       - name: Upload sdist and wheel
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: citeable-wheel-sdist
           path: |
