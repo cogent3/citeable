@@ -155,7 +155,7 @@ class Article(CitationBase):
     """An ``@article`` BibTeX entry."""
 
     journal: str
-    volume: int
+    volume: int | None
     pages: str | None
     article_number: str | None
     number: int | None
@@ -166,8 +166,8 @@ class Article(CitationBase):
         title: str,
         year: int,
         journal: str,
-        volume: int,
         *,
+        volume: int | None = None,
         pages: str | None = None,
         article_number: str | None = None,
         number: int | None = None,
@@ -178,10 +178,6 @@ class Article(CitationBase):
         app: str | None = None,
     ) -> None:
         require_field(journal, "journal", "Article")
-        require_field(volume, "volume", "Article")
-        if pages is None and article_number is None:
-            msg = "Article requires 'pages' or 'article_number'; both are None"
-            raise ValueError(msg)
 
         self._init_base(
             author, title, year, doi=doi, url=url, note=note, key=key, app=app
@@ -199,8 +195,9 @@ class Article(CitationBase):
             _format_bibtex_field("title", self.title),
             _format_bibtex_field("journal", self.journal),
             _format_bibtex_field("year", str(self.year)),
-            _format_bibtex_field("volume", str(self.volume)),
         ]
+        if self.volume is not None:
+            lines.append(_format_bibtex_field("volume", str(self.volume)))
         if self.number is not None:
             lines.append(_format_bibtex_field("number", str(self.number)))
         if self.pages is not None:
@@ -217,8 +214,9 @@ class Article(CitationBase):
             ("title", self.title),
             ("year", self.year),
             ("journal", self.journal),
-            ("volume", self.volume),
         ]
+        if self.volume is not None:
+            fields.append(("volume", self.volume))
         if self.pages is not None:
             fields.append(("pages", self.pages))
         if self.article_number is not None:
