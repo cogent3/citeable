@@ -44,27 +44,17 @@ def test_article_with_article_number():
     assert a.pages is None
 
 
-def test_article_missing_pages_and_article_number():
-    with pytest.raises(ValueError, match=r"pages.*article_number"):
-        Article(
-            author=["Smith, Jane"],
-            title="Something",
-            year=2024,
-            journal="Nature",
-            volume=1,
-        )
-
-
-def test_article_missing_volume():
-    with pytest.raises(ValueError, match="Article requires 'volume'"):
-        Article(
-            author=["Smith, Jane"],
-            title="Something",
-            year=2024,
-            journal="Nature",
-            volume=None,  # type: ignore[arg-type]
-            pages="1-10",
-        )
+def test_article_advance_access():
+    a = Article(
+        author=["Smith, Jane"],
+        title="Something",
+        year=2024,
+        journal="Nature",
+        doi="10.1234/example",
+    )
+    assert a.volume is None
+    assert a.pages is None
+    assert a.article_number is None
 
 
 def test_article_missing_journal():
