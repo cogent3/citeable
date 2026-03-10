@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "citeable"
 version = "2026.3.11b0"
-description = "Structured BibTeX citations for cogent3 plugins"
+description = "Structured BibTeX citations for developers of scientific software packages."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "BSD-3-Clause" }
