@@ -35,6 +35,11 @@ jobs:
           cov="--cov-report lcov:lcov-${{matrix.os}}-${{matrix.python-version}}.lcov --cov-report term --cov-append --cov citeable"
           uv run nox -s "test-${{ matrix.python-version }}" -- $cov
 
+      - name: trust coveralls (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew trust coverallsapp/coveralls
+
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
