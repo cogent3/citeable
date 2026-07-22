@@ -19,12 +19,12 @@ jobs:
         python-version: ["3.11", "3.14"]
 
     steps:
-      - uses: "actions/checkout@v6"
+      - uses: "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803" # v6.1.0
         with:
           fetch-depth: 0
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -35,8 +35,13 @@ jobs:
           cov="--cov-report lcov:lcov-${{matrix.os}}-${{matrix.python-version}}.lcov --cov-report term --cov-append --cov citeable"
           uv run nox -s "test-${{ matrix.python-version }}" -- $cov
 
+      - name: trust coveralls (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew trust coverallsapp/coveralls
+
       - name: Coveralls Parallel
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
         with:
           parallel: true
           github-token: ${{ secrets.github_token }}
@@ -49,12 +54,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
@@ -68,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Coveralls Finished
-      uses: coverallsapp/github-action@v2
+      uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e # v2.3.7
       with:
         github-token: ${{ secrets.github_token }}
         parallel-finished: true
